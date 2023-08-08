@@ -14,6 +14,11 @@ import org.hibernate.annotations.GenericGenerator;
 public class FlightClass {
 
 	
+	public FlightClass(String className) {
+		super();
+		this.className = className;
+	}
+
 	@Id
 	@GeneratedValue(strategy= GenerationType.TABLE,generator="native")
 	@GenericGenerator(name = "native",strategy = "native")	

@@ -1,5 +1,7 @@
 package com.simplilearn.dao;
 
+import java.util.List;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
@@ -28,7 +30,7 @@ public class DatabaseMappingHelper {
 		return session;
 	}
 	
-	public Airline getAirlineForId(int id)
+	public Airline getAirlineForId(int id, String name)
 	{
 		Session session =
                 getDBCurrentSession();
@@ -40,7 +42,7 @@ public class DatabaseMappingHelper {
         return airline;
 	}
 	
-	public Itinerary getItineraryForId(int id)
+	public Itinerary getItineraryForId(int id, Route route)
 	{
 		Session session =
                 getDBCurrentSession();
@@ -52,7 +54,7 @@ public class DatabaseMappingHelper {
         return itinerary;
 	}
 	
-	public Route getRouteForId(int id)
+	public Route getRouteForId(int id, Airline airline)
 	{
 		Session session =
                 getDBCurrentSession();
@@ -64,6 +66,7 @@ public class DatabaseMappingHelper {
         return route;
 	}
 	
+	
 	public FlightClass getFlightClassForId(int id)
 	{
 		Session session =
@@ -74,6 +77,42 @@ public class DatabaseMappingHelper {
         session.getTransaction().commit();
 
         return flightClass;
+	}
+	
+	void createAirline(Airline airline, List<Route> routes)
+	{
+		Session session =
+                getDBCurrentSession();
+        session.beginTransaction();
+
+        airline.setRoutes(routes);
+        session.persist(airline);
+        session.getTransaction().commit();
+        session.close();
+	}
+	
+	void createRoute(Route route, List<Itinerary> itineraries)
+	{
+		Session session =
+                getDBCurrentSession();
+        session.beginTransaction();
+
+        route.setItineraries(itineraries);
+        session.persist(route);
+        session.getTransaction().commit();
+        session.close();
+	}
+	
+	void createItinerary(Itinerary itinerary, List<FlightClass> flightClasses)
+	{
+		Session session =
+                getDBCurrentSession();
+        session.beginTransaction();
+
+        itinerary.setFlightClassess(flightClasses);
+        session.persist(itinerary);
+        session.getTransaction().commit();
+        session.close();
 	}
 	
 	

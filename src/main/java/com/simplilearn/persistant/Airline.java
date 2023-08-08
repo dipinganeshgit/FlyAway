@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
@@ -16,9 +18,24 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.GenerationType;
 
+@NamedQueries(  
+	    {  
+	        @NamedQuery(  
+	        name = "findAirlinebyName",  
+	        query = "from Airline e where e.name = :name"  
+	        )  
+	    }  
+)  
+
 @Entity
 @Table(name="Airline")
 public class Airline {
+
+	public Airline(String name, String description) {
+		super();
+		this.name = name;
+		this.description = description;
+	}
 
 	@Id
 	@GeneratedValue(strategy= GenerationType.TABLE,generator="native")

@@ -19,6 +19,12 @@ import org.hibernate.annotations.GenericGenerator;
 @Table(name = "Route")
 public class Route {
 
+	public Route(String source, String destination) {
+		super();
+		this.source = source;
+		this.destination = destination;
+	}
+
 	@Id
 	@GeneratedValue(strategy= GenerationType.TABLE,generator="native")
 	@GenericGenerator(name = "native",strategy = "native")	

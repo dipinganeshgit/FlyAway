@@ -1,6 +1,7 @@
 package com.simplilearn.dao;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -10,6 +11,7 @@ import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.query.Query;
 
 import com.simplilearn.persistant.Airline;
 import com.simplilearn.persistant.FlightClass;
@@ -26,55 +28,47 @@ public class AirlinesDao {
 		
 		Transaction t = session.beginTransaction();
 		
-		
-		Airline airIndiaExpressAirline = new Airline();
-		airIndiaExpressAirline.setName("Air India Express");
-		airIndiaExpressAirline.setDescription("Economical Flights");
-		
+		List<FlightClass> flightClasses = new ArrayList<FlightClass>();
+		List<Itinerary> itineraries = new ArrayList<Itinerary>();
 		List<Route> routes = new ArrayList<Route>();
-		
-//		Route route = new Route();
-//		route.setSource("Dubai");
-//		route.setDestination("Kannur");
-//		
-//		
-//		List<Itinerary> itineraries = new ArrayList<Itinerary>();
-//
-//		Itinerary itinerary = new Itinerary();
-//		itinerary.setArrivaltime("10:00 am");
-//		itinerary.setDepartureTime("06:00 am");
-//
-//		
-//		List<FlightClass> flightClasses = new ArrayList<FlightClass>();
-//
-//		FlightClass flightClass = new FlightClass();
-//		flightClass.setClassName("Economy");
-//		
-//		flightClasses.add(flightClass);
-//		
-//		itinerary.setFlightClassess(flightClasses);
-//		
-//		itineraries.add(itinerary);
-//		
-//		route.setItineraries(itineraries);
-//		
-//		routes.add(route);
-//		
-		airIndiaExpressAirline.setRoutes(routes);
-				
-		session.persist(airIndiaExpressAirline);
-		
-		t.commit();
-		System.out.println("Successfully saved...");
 
-		sf.close();
-		session.close();
+        Query query = session.getNamedQuery("findAirlinebyName");    
+        query.setParameter("name","Air India Express");   
+                
+        List<Airline> airlines=query.getResultList();   
+        Airline airline = null;
+        
+        if (airlines.isEmpty()) {
+			airline = new Airline("Air India Express", "Economical Flight");
+		}
+        else {
+            Iterator<Airline> itr = airlines.iterator();    
+            while(itr.hasNext()){    
+            	System.out.println("Airline from DB ==" +itr.next());    
+
+            	airline=itr.next();    
+            	System.out.println("Airline from DB ==" +airline);    
+            }    
+        	
+		}
+       
+//		
+//		airline = new 
+//		
+//		FlightClass flightcalssClass = new FlightClass("Economy");
+//		flightClasses.add(flightcalssClass);
+//		
+//		Itinerary itineryItinerary = new Itinerary("10:00 am", "14:00 am");
+//		mappingHelper.createItinerary(itineryItinerary, flightClasses);
+//		
+//		itineraries.add(itineryItinerary);
+//		
+//		Route route = new Route("Dubai", "Kannur");
+//		mappingHelper.createItinerary(itineryItinerary, flightClasses);
 		
-		AirlinesDao dao = new AirlinesDao();
-		
-		Airline retrievedAirline = dao.getAirlineForId(1);
-		
-		System.out.println("The airline name is "+retrievedAirline.getName());
+        session.save(airline);
+        t.commit();
+        session.close();
 
 		
 	}

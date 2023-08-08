@@ -19,6 +19,12 @@ import org.hibernate.annotations.GenericGenerator;
 @Table(name = "Itinerary")
 public class Itinerary {
 
+	public Itinerary(String departureTime, String arrivaltime) {
+		super();
+		this.departureTime = departureTime;
+		this.arrivaltime = arrivaltime;
+	}
+
 	@Id
 	@GeneratedValue(strategy= GenerationType.TABLE,generator="native")
 	@GenericGenerator(name = "native",strategy = "native")	
